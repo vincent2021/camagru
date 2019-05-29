@@ -1,5 +1,5 @@
 <?php
-
+require_once 'header.php';
 ?>
 <html>
 <title>Back to the 90s</title>
