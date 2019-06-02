@@ -2,7 +2,6 @@
 require_once 'config/database.php';
 try {
 $bdd = new PDO($DB_DSN, $DB_USER, $DB_PASSWORD);
-echo "BDD Connected.<br>";
 } catch (Exception $e) {
     echo "Erreur".$e->getMessage();
     exit();
