@@ -5,7 +5,7 @@
         canvas       = document.querySelector('#webcam_canvas'),
         photo        = document.querySelector('#webcam_img'),
         startbutton  = document.querySelector('#webcam_start'),
-        width = 640,
+        width = 320,
         height = 0;
     
     navigator.mediaDevices.getUserMedia(
