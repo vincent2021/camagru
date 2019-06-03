@@ -1,28 +1,27 @@
 <?php 
-session_start();
-include "auth.php";
-foreach($_POST as $value) {
-	$value = htmlspecialchars($value);
-}
-if (isset($_POST['login']) && isset($_POST['passwd']) && auth($_POST['login'], $_POST['passwd'])) {
-    $_SESSION['loggued_on_user'] = $_POST['login'];
-    header("Location: index.php");
-} else if (isset($_POST['login']) && isset($_POST['passwd'])) {
-    echo "Connection error.\n";
-}
 require_once  'header.php';
+require_once 'class/userClass.php';
+$userClass = new userClass();
+$fdbk = "";
+if (isset($_POST['submit']) && $_POST['submit'] == 'OK') {
+    foreach($_POST as $value) {
+        $value = htmlspecialchars($value);
+    }
+    if (isset($_POST['email']) && isset($_POST['passwd'])) {
+        $fdbk = $userClass->userLogin($_POST['email'], $_POST['passwd']);
+    }
+}
 ?>
 <body>
-<div class="content">
-<form class="lform" method="POST" action="login.php">
+<div class="field">
+<form class="form" method="POST" action="login.php">
     <h1>Sign-in</h1>
-    <p>Email: <input id="1" type="text" name="login" autocomplete="username" value=""/> <br>
-      Password: <input id="2" type="password" name="passwd" autocomplete="current-password" value=""/><br>
-      <input id="3" type="submit" name="submit" value="OK"></p>
+    <p>Email: <input id="email" type="text" name="email" value=""/> <br>
+      Password: <input id="passwd" type="password" name="passwd" value=""/><br>
+      <input id="submit" type="submit" name="submit" value="OK"></p>
   </form>
-  <a href="create.php">Sign-up</a><br>
+  <?=$fdbk?><br>
+  <a href="signup.php">Sign-up</a><br>
 </div>
 </body>
-<?php
-require_once 'footer.php';
-?>
+<?php require_once 'footer.php';?>

@@ -1,11 +1,7 @@
 <?php
+date_default_timezone_set("Europe/Paris");
+session_start();
 require_once 'config/database.php';
-try {
-$bdd = new PDO($DB_DSN, $DB_USER, $DB_PASSWORD);
-} catch (Exception $e) {
-    echo "Erreur".$e->getMessage();
-    exit();
-}
 ?>
 <!DOCTYPE html>
 <html>

@@ -1,40 +1,34 @@
 <?php
-session_start();
-foreach($_POST as $value) {
-	$value = htmlspecialchars($value);
-}
-if ($_POST['submit'] == 'OK' && isset($_POST['login']) && isset($_POST['passwd'])) {
-    $login = $_POST['login'];
-    $passwd = hash('whirlpool', $_POST['passwd']);
-    $folder = "../private";
-    $file = $folder."/passwd";
-    if (!file_exists($folder)) {
-        mkdir($folder);
-        file_put_contents($folder."/.htaccess", "Deny from all");
-    }
-    if (file_exists($file))
-        $read = unserialize(file_get_contents($file));
-    if (@$read[$login]) {
-        echo("User already exists.\n");
-    } else {
-        $read[$login] = array(
-            'login' => $login,
-            'passwd' => $passwd
-        );
-        file_put_contents($file, serialize($read), LOCK_EX);
-        header("Location: login.php");
-    }
-}
 require_once 'header.php';
+require_once 'class/userClass.php';
+$userClass = new userClass();
+$fdbk = "";
+if (isset($_POST['submit']) && $_POST['submit'] == 'OK') {
+    foreach($_POST as $value) {
+        $value = htmlspecialchars($value);
+    }
+    if (isset($_POST['full_name']) && isset($_POST['email']) && isset($_POST['passwd'])) {
+        $name_check = preg_match('~^[A-Za-z0-9_]{3,20}$~i', $_POST['full_name']);
+        $email_check = preg_match('~^[a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.([a-zA-Z]{2,4})$~i', $_POST['email']);
+        $passwd_check = preg_match('~^[A-Za-z0-9!@#$%^&*()_]{6,20}$~i', $_POST['passwd']);
+        if ($name_check || $email_check || $passwd_check || strlen($_POST['full_name'] < 4)) {
+            $fdbk = $userClass->userSignup($_POST['full_name'], $_POST['email'], $_POST['passwd']);
+        } else {
+            $fdbk = "Form is not valid.";
+        }
+    }
+}
 ?>
 <body>
-<div class="content">
-    <form method="POST" action="create.php">
+<div class="field">
+    <form method="POST" action="signup.php">
     <h1>New user</h1>
-    <p>Email: <input id="1" type="text" name="login" value=""/> <br>
-      Password: <input id="2" type="password" name="passwd" value=""/><br>
-      <input id="3" type="submit" name="submit" value="OK"></p>
+    <p>Name: <input id="full_name" type="text" name="full_name" value=""/> <br>
+       Email: <input id="email" type="text" name="email" value=""/> <br>
+       Password: <input id="passwd" type="password" name="passwd" value=""/><br>
+      <input id="submit" type="submit" name="submit" value="OK"></p>
     </form>
+    <br><?=$fdbk;?><br>
 </div>
 </body>
 <?php

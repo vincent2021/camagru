@@ -1,16 +1,9 @@
 <?php
 require_once 'database.php';
-try {
-$bdd = new PDO($DB_DSN, $DB_USER, $DB_PASSWORD);
-echo "BDD Connected<br>";
-} catch (Exception $e) {
-    echo "Erreur".$e->getMessage();
-    exit();
-}
 
 $bdd->exec('CREATE TABLE `pictures`
 (
-  `id` int PRIMARY KEY,
+  `id` int PRIMARY KEY NOT NULL AUTO_INCREMENT,
   `user_id` int NOT NULL,
   `status` varchar(255),
   `created_at` varchar(255)
@@ -18,18 +11,16 @@ $bdd->exec('CREATE TABLE `pictures`
 
 CREATE TABLE `users`
 (
-  `id` int PRIMARY KEY,
+  `id` int PRIMARY KEY NOT NULL AUTO_INCREMENT,
   `full_name` varchar(255),
   `email` varchar(255) UNIQUE,
   `passwd` varchar(255),
-  `gender` varchar(255),
-  `date_of_birth` varchar(255),
   `created_at` varchar(255)
 );
 
 CREATE TABLE `comments`
 (
-  `id` int PRIMARY KEY,
+  `id` int PRIMARY KEY NOT NULL AUTO_INCREMENT,
   `user_id` int NOT NULL,
   `pic_id` int NOT NULL,
   `comment_txt` varchar(255)
@@ -37,7 +28,7 @@ CREATE TABLE `comments`
 
 CREATE TABLE `likes`
 (
-  `id` int PRIMARY KEY,
+  `id` int PRIMARY KEY NOT NULL AUTO_INCREMENT,
   `user_id` int NOT NULL,
   `pic_id` int NOT NULL,
   `status` int

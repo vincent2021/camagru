@@ -1,12 +1,6 @@
 <?php
 require_once 'database.php';
-try {
-$bdd = new PDO($DB_DSN, $DB_USER, $DB_PASSWORD);
-} catch (Exception $e) {
-    echo "Erreur".$e->getMessage();
-    exit();
-}
-
+$bdd = getDB();
 $bdd->exec('SET FOREIGN_KEY_CHECKS = 0;
 DROP TABLE IF EXISTS `pictures`;
 DROP TABLE IF EXISTS `users`;
