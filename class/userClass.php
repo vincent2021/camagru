@@ -4,7 +4,7 @@ Class userClass {
     public function userLogin ($email, $passwd) {
         $bdd = getDB();
         $passwd = hash('whirlpool', $passwd);
-        $req = $bdd->prepare('SELECT full_name FROM users
+        $req = $bdd->prepare('SELECT id, full_name FROM users
         WHERE (email=:email AND passwd=:passwd)');
         try {
             $req->execute(array(
@@ -15,9 +15,12 @@ Class userClass {
             echo "Error".$e->getMessage();
         }
         if ($req->rowCount() == 1) {
-            return ("Welcome ".$req->fetch()[0]);
+            $data=$req->fetch();
+            $_SESSION['uid'] = $data[0];
+            $_SESSION['name'] = $data[1];
+            return (True);
         } else {
-            return ("Login failed.");
+            return (False);
         }
     }
 
@@ -41,6 +44,24 @@ Class userClass {
             }
         }
         return ("Account successfully created, please <a href=login.php>login</a>");
+    }
+
+    public function userDetail ($uid) {
+        $bdd = getDB();
+        $req = $bdd->prepare('SELECT full_name, email FROM users WHERE (id=:id)');
+        try {
+            $req->execute(array(
+            'id' => $uid,
+            ));
+        } catch (PDOException $e) {
+            echo "Error".$e->getMessage();
+        }
+        if ($req->rowCount() == 1) {
+            $data=$req->fetch();
+            return ($data);
+        } else {
+            return ("Error occured.");
+        }
     }
 }
 

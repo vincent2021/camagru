@@ -8,7 +8,11 @@ if (isset($_POST['submit']) && $_POST['submit'] == 'OK') {
         $value = htmlspecialchars($value);
     }
     if (isset($_POST['email']) && isset($_POST['passwd'])) {
-        $fdbk = $userClass->userLogin($_POST['email'], $_POST['passwd']);
+        if ($userClass->userLogin($_POST['email'], $_POST['passwd']) == True) {
+            header('Location: index.php');
+        } else {
+            $fdbk = "Login failed. Please check your password or make sure you're registered.";
+        }
     }
 }
 ?>
