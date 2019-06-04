@@ -6,7 +6,7 @@ require_once 'header.php';
     <button class="button" id="webcam_start">Prendre une photo</button>
     <br>
     <canvas id="webcam_canvas"></canvas>
-    <img id="snap" src='assets/capture/test.png'>
+    <img id="snap" src=''>
     <script type="text/javascript" src="capture.js"></script>
 </body>
 <?php
