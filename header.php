@@ -24,7 +24,7 @@ require_once 'config/database.php';
             <a class="navbar-item" href="index.php">
                 Home
             </a>
-            <a class="navbar-item" href="index.php">
+            <a class="navbar-item" href="camagram.php">
                 Library
             </a>
         </div>
