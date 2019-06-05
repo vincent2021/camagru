@@ -42,26 +42,27 @@
       var xhr = getXMLHttpRequest();
       xhr.onreadystatechange = function() {//Call a function when the state changes.
         if(xhr.readyState == 4 && xhr.status == 200) {
-            console.log(xhr.responseText);          
+            snap_file = xhr.responseText;
+            console.log(xhr.responseText)          
         }
       }
       xhr.open('POST', 'camagram.php', true);
       xhr.setRequestHeader("Content-Type", "image/png");
       xhr.send(data);
+      return (1);
     }
     
     function reload_snap(){
-      var time = Date.now().toString().substr(0, 10);
-      snap_file = 'assets/capture/test' + time + '.png';
-      setTimeout(function() {document.getElementById('snap').src = snap_file;}, 800);
       snap = new Image();
-      setTimeout(function() {snap.src = snap_file;;
-        canvas.getContext('2d').drawImage(snap, 0, 0, width, height);}, 1000);
+      snap.src = snap_file;
+      setTimeout(function() {
+        canvas.getContext('2d').drawImage(snap, 0, 0, width, height);}, 800);
     }
 
     startbutton.addEventListener('click', function(ev){
-        takepicture();
-        reload_snap();
+        if (takepicture() == 1) {
+          reload_snap();
+        }
       ev.preventDefault();
     }, false);
 

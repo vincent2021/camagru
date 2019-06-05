@@ -1,6 +1,5 @@
 <?php
 require_once 'database.php';
-
 $bdd->exec('CREATE TABLE `pictures`
 (
   `id` int PRIMARY KEY NOT NULL AUTO_INCREMENT,
