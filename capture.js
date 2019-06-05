@@ -2,10 +2,9 @@
 
     var streaming = false,
         video        = document.querySelector('#webcam'),
-        canvas       = document.querySelector('#webcam_canvas'),
-        photo        = document.querySelector('#webcam_img'),
-        startbutton  = document.querySelector('#webcam_start'),
-        width = 320,
+        canvas       = document.querySelector('#canvas'),
+        startbutton  = document.querySelector('#shoot_button'),
+        width = 480,
         height = 0;
     
     navigator.mediaDevices.getUserMedia(
@@ -40,31 +39,17 @@
       canvas.getContext('2d').drawImage(video, 0, 0, width, height);
       var data = canvas.toDataURL('image/png');
       var xhr = getXMLHttpRequest();
-      xhr.onreadystatechange = function() {//Call a function when the state changes.
+      xhr.onreadystatechange = function() {
         if(xhr.readyState == 4 && xhr.status == 200) {
-            snap_file = xhr.responseText;
-            console.log(xhr.responseText)          
+            document.getElementById("preview").src = xhr.response;
         }
       }
       xhr.open('POST', 'camagram.php', true);
       xhr.setRequestHeader("Content-Type", "image/png");
       xhr.send(data);
-      return (1);
-    }
-    
-    function reload_snap(){
-      snap = new Image();
-      snap.src = snap_file;
-      setTimeout(function() {
-        canvas.getContext('2d').drawImage(snap, 0, 0, width, height);}, 800);
     }
 
-    startbutton.addEventListener('click', function(ev){
-        if (takepicture() == 1) {
-          reload_snap();
-        }
-      ev.preventDefault();
-    }, false);
+    startbutton.addEventListener('click', function(){takepicture();});
 
     function getXMLHttpRequest() {
       var xhr = null;
@@ -80,7 +65,7 @@
               xhr = new XMLHttpRequest(); 
           }
       } else {
-          alert("Votre navigateur ne supporte pas l'objet XMLHTTPRequest...");
+          alert("Your browser doesn't support XMLHTTPRequest...");
           return null;
       }
       

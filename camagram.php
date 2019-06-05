@@ -1,13 +1,11 @@
 
 <?php
-header("Content-type: image/png");
 $string = "Hello 42";
-$im     = imagecreatefrompng($GLOBALS['HTTP_RAW_POST_DATA']);
-$orange = imagecolorallocate($im, 220, 210, 60);
-$px     = (imagesx($im) - 7.5 * strlen($string)) / 2;
-imagestring($im, 3, $px, 9, $string, $orange);
-$snap_file = 'assets/capture/uid_'.time().'.png';
-imagepng($im, $snap_file);
-echo $snap_file;
+$im = imagecreatefrompng($GLOBALS['HTTP_RAW_POST_DATA']);
+$filter = imagecreatefrompng('assets/filters/ananas.png');
+imagecopy($im, $filter, 30, 150, 0, 0, 450, 234);
+$preview = 'assets/tmp/uid_'.time().'.png';
+imagepng($im, $preview);
+echo $preview;
 imagedestroy($im);
 ?>
