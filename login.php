@@ -17,12 +17,12 @@ if (isset($_POST['submit']) && $_POST['submit'] == 'OK') {
 }
 ?>
 <body>
-<div class="field">
+<div class="container">
+<h1 class="title">Sign-in</h1>
 <form class="form" method="POST" action="login.php">
-    <h1>Sign-in</h1>
-    <p>Email: <input id="email" type="text" name="email" value=""/> <br>
-      Password: <input id="passwd" type="password" name="passwd" value=""/><br>
-      <input id="submit" type="submit" name="submit" value="OK"></p>
+    <p>Email: <input class="input" id="email" type="email" name="email" value=""/> <br>
+      Password: <input class ="input" id="passwd" type="password" name="passwd" value=""/><br>
+      <input class="button is-primary" id="submit" type="submit" name="submit" value="OK"></p>
   </form>
   <?=$fdbk?><br>
   <a href="signup.php">Sign-up</a><br>

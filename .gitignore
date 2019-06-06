@@ -1,4 +1,5 @@
 assets/.DS_Store
 .DS_Store
-assets/capture/uid_*
-assets/tmp/uid_*
+assets/capture/*
+assets/tmp/*
+assets/library/*

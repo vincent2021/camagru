@@ -10,9 +10,9 @@ if (isset($_SESSION['uid'])) {
 ?>
 <body>
 <div>
-    <h1>Full name</h1>
+    <h1 class="title">Full name</h1>
     <p><?=$data[0]?></p><br>
-    <h1>E-mail</h1>
+    <h1 class="title">E-mail</h1>
     <p><?=$data[1]?></p><br>
 </div>
 </body>

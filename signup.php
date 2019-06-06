@@ -22,7 +22,7 @@ if (isset($_POST['submit']) && $_POST['submit'] == 'OK') {
 <body>
 <div class="field">
     <form method="POST" action="signup.php">
-    <h1>New user</h1>
+    <h1 class="title">New user</h1>
     <p>Name: <input id="full_name" type="text" name="full_name" value=""/> <br>
        Email: <input id="email" type="text" name="email" value=""/> <br>
        Password: <input id="passwd" type="password" name="passwd" value=""/><br>
