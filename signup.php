@@ -20,13 +20,13 @@ if (isset($_POST['submit']) && $_POST['submit'] == 'OK') {
 }
 ?>
 <body>
-<div class="field">
-    <form method="POST" action="signup.php">
-    <h1 class="title">New user</h1>
-    <p>Name: <input id="full_name" type="text" name="full_name" value=""/> <br>
-       Email: <input id="email" type="text" name="email" value=""/> <br>
-       Password: <input id="passwd" type="password" name="passwd" value=""/><br>
-      <input id="submit" type="submit" name="submit" value="OK"></p>
+<div class="container">
+    <form class="form" method="POST" action="signup.php">
+    <br><h1 class="title">New user</h1>
+        <div class="label">Name</div> <input class="input" type="text" id="full_name" name="full_name" value=""/> <br>
+        <div class="label">Email</div> <input class="input" type="email" id="email" name="email" value=""/> <br>
+        <div class="label">Password</div> <input class="input" type="password" id="passwd" name="passwd" value=""/><br>
+        <br><div class="control"><input class="button is-primary" id="submit" type="submit" name="submit" value="Create a new account"></div>
     </form>
     <br><?=$fdbk;?><br>
 </div>

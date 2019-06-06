@@ -9,7 +9,7 @@ if (isset($_SESSION['uid'])) {
 }
 ?>
 <body>
-<div>
+<div class="section">
     <h1 class="title">Full name</h1>
     <p><?=$data[0]?></p><br>
     <h1 class="title">E-mail</h1>

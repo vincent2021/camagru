@@ -18,14 +18,14 @@ if (isset($_POST['submit']) && $_POST['submit'] == 'OK') {
 ?>
 <body>
 <div class="container">
-<h1 class="title">Sign-in</h1>
+<br><h1 class="title">Sign-in</h1>
 <form class="form" method="POST" action="login.php">
-    <p>Email: <input class="input" id="email" type="email" name="email" value=""/> <br>
-      Password: <input class ="input" id="passwd" type="password" name="passwd" value=""/><br>
-      <input class="button is-primary" id="submit" type="submit" name="submit" value="OK"></p>
+    <div class="label">Email</div><input class="input" id="email" type="email" name="email" value=""/> <br>
+    <div class="label">Password</div><input class ="input" id="passwd" type="password" name="passwd" value=""/><br>
+    <br><span><input class="button is-primary" id="submit" type="submit" name="submit" value="OK"></span>
+    <span><a class="button" href="signup.php">Sign-up</a></span>
   </form>
   <?=$fdbk?><br>
-  <a href="signup.php">Sign-up</a><br>
 </div>
 </body>
 <?php require_once 'footer.php';?>

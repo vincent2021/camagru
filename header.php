@@ -22,10 +22,10 @@ require_once 'config/database.php';
     <div class="navbar-menu">
         <div class="navbar-start">
             <a class="navbar-item" href="index.php">
-                Home
+                <span class="icon"><i class="fas fa-home"></i></span><span>Home</span>
             </a>
             <a class="navbar-item" href="library.php">
-                Library
+            <span class="icon"><i class="far fa-eye"></i></span><span>Library</span>
             </a>
         </div>
         <div class="navbar-end">
