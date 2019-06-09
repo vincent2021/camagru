@@ -65,7 +65,7 @@
             document.getElementById("preview").src = xhr.response;
         }
       }
-      xhr.open('POST', 'camagram.php?f=' + filter, true);
+      xhr.open('POST', 'camagram.php?filter=' + filter, true);
       xhr.setRequestHeader('Content-Type', 'image/png');
       xhr.send(data);
     }

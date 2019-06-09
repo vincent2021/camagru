@@ -3,7 +3,7 @@ require_once  'header.php';
 require_once 'class/userClass.php';
 $userClass = new userClass();
 $fdbk = "";
-if (isset($_POST['submit']) && $_POST['submit'] == 'OK') {
+if (isset($_POST['submit']) && $_POST['submit'] == 'Login') {
     foreach($_POST as $value) {
         $value = htmlspecialchars($value);
     }
@@ -22,10 +22,10 @@ if (isset($_POST['submit']) && $_POST['submit'] == 'OK') {
 <form class="form" method="POST" action="login.php">
     <div class="label">Email</div><input class="input" id="email" type="email" name="email" value=""/> <br>
     <div class="label">Password</div><input class ="input" id="passwd" type="password" name="passwd" value=""/><br>
-    <br><span><input class="button is-primary" id="submit" type="submit" name="submit" value="OK"></span>
+    <br><span><input class="button is-primary" id="submit" type="submit" name="submit" value="Login"></span>
     <span><a class="button" href="signup.php">Sign-up</a></span>
   </form>
-  <?=$fdbk?><br>
+  <p><?=$fdbk?></p><br>
 </div>
 </body>
 <?php require_once 'footer.php';?>

@@ -1,4 +1,6 @@
 <?php
+require_once 'config/database.php';
+
 Class userClass {
 
     public function userLogin ($email, $passwd) {

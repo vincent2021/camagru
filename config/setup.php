@@ -4,7 +4,7 @@ $bdd->exec('CREATE TABLE `pictures`
 (
   `id` int PRIMARY KEY NOT NULL AUTO_INCREMENT,
   `user_id` int NOT NULL,
-  `status` varchar(255),
+  `path` varchar(255) NOT NULL,
   `created_at` varchar(255)
 );
 
