@@ -50,18 +50,15 @@
           reader = new FileReader();
           reader.readAsDataURL(file_input.files[0]);
           reader.addEventListener('load', function() {
-              console.log(reader.result);
               sendPicture(reader.result, getFilter());
           });
       });
     }
 
     function sendPicture(data, filter) {
-      console.log('data:' + data);
       var xhr = getXMLHttpRequest();
       xhr.onreadystatechange = function() {
         if(xhr.readyState == 4 && xhr.status == 200) {
-          console.log('gd return:' + xhr.response);
             document.getElementById("preview").src = xhr.response;
         }
       }
@@ -74,7 +71,6 @@
       radioBtn = document.getElementsByName('filter');
       for (i = 0; i < radioBtn.length ; i++) {
         if (radioBtn[i].type == 'radio' && radioBtn[i].checked) {
-          console.log('selected filter:' + radioBtn[i].value);
           return (radioBtn[i].value);
         }
       }

@@ -29,13 +29,15 @@ try {
             echo '<div class="columns">';
             $items_per_line = 3;
             foreach ($files as $file) {
+                $file_name = substr($file, strrpos($file, '/') + 1);
+                $pic_html = '<div class="column"><a href="picture.php?img='.$file_name.'"><img src="'.$file.'" title="'.$file.'" alt="lib_picture"></a></div>';
                 if ($items_per_line != 0) {
-                   echo '<div class="column"> <img src="'.$file.'" title="'.$file.'" alt="lib_picture"></div>';
+                   echo $pic_html;
                    $items_per_line--;
                 } else {
                     echo '</div><br><div class="columns">';
                     $items_per_line = 2;
-                    echo '<div class="column"> <img src="'.$file.'" title="'.$file.'" alt="lib_picture"></div>';
+                    echo $pic_html;
                 }
             }
             echo '</div>';
