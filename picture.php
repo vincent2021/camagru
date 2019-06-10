@@ -15,6 +15,8 @@ if (isset($_POST['submit']) && isset($_POST['comment']) && isset($_SESSION['uid'
     } else {
         $fdbk = "Your comment hasn't been send. Please make sure you're connected and try again.";
     }
+    unset($_POST['comment']);
+    unset($_POST['submit']);
 }
 ?>
 <body>
@@ -28,7 +30,10 @@ if (isset($_POST['submit']) && isset($_POST['comment']) && isset($_SESSION['uid'
             <textarea class="textarea" name="comment" placeholder="write a comment"></textarea>
             <input class="button" type="submit" name="submit" value="Send">
         </form>
-        <?=$fdbk?>
+        <?=$fdbk?> <br>
+        <?php foreach ($pictureClass->getPictureComment() as $comment) {
+            echo $comment."<br>";
+        }; ?>
     </div> 
 </div>
 </body>
