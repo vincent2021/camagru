@@ -1,12 +1,17 @@
 <?php 
 require_once  'header.php';
-$nb_items = 3;
+$nb_items = 6;
 if (isset($_GET['p'])) {
-    $start_item = ($_GET['p'] - 1) * $nb_items;
+    $page = $_GET['p'];
 } else {
-    $start_item = 0;
+    $page = 1;
 }
+$start_item = ($page - 1) * $nb_items;
 $bdd = getDB();
+$count_req = $bdd->query('SELECT COUNT(*) FROM `pictures`');
+$page_nb = ceil($count_req->fetch()[0] / $nb_items);
+print "Nb_page".($page_nb)."<br>";
+
 $req = $bdd->prepare('SELECT `path` FROM `pictures` LIMIT :nb_items OFFSET :start_item');
 $req->bindParam('nb_items', $nb_items, PDO::PARAM_INT);
 $req->bindParam('start_item', $start_item, PDO::PARAM_INT);
@@ -23,30 +28,34 @@ try {
 <body>
 <div class="section">
     <h1 class="title">Library</h1>
-    <div class="tile">
-     <?php 
-        foreach ($files as $file) {
-            if (pathinfo($file, PATHINFO_EXTENSION) == 'png') {
-                echo '<div class="box"><img class="lib_pic" src="'.$file.'" title="'.$file.'" alt="lib_picture"></div>';
+        <?php  
+            echo '<div class="columns">';
+            $items_per_line = 3;
+            foreach ($files as $file) {
+                if ($items_per_line != 0) {
+                   echo '<div class="column"> <img src="'.$file.'" title="'.$file.'" alt="lib_picture"></div>';
+                   $items_per_line--;
+                } else {
+                    echo '</div><br><div class="columns">';
+                    $items_per_line = 2;
+                    echo '<div class="column"> <img src="'.$file.'" title="'.$file.'" alt="lib_picture"></div>';
+                }
             }
-        }
+            echo '</div>';
         ?>
-    </div>
-    <nav class="pagination" role="navigation" aria-label="pagination">
-    <a class="pagination-previous">Previous</a>
-    <a class="pagination-next">Next page</a>
-    <ul class="pagination-list">
-        <li>
-        <a class="pagination-link is-current" href="library.php?p=1">1</a>
-        </li>
-        <li>
-        <a class="pagination-link" href="library.php?p=2">2</a>
-        </li>
-        <li>
-        <a class="pagination-link" href="library.php?p=3">3</a>
-        </li>
-    </ul>
-    </nav>
+    <br>
+    <nav class="pagination is-centered" role="navigation">
+    <a class="pagination-previous" <?php if ($page == 1) {echo 'disabled';} else {echo 'href="library.php?p='.($page - 1).'"';}?>>Previous</a>
+    <a class="pagination-next" <?php if ($page == $page_nb) {echo 'disabled';} else {echo 'href="library.php?p='.($page + 1).'"';}?>>Next page</a>
+        <ul class="pagination-list">
+            <li><a class="pagination-link <?php if ($page == 1) {echo 'is-current';}?>" href="library.php">1</a></li>
+            <?php if ($page != 1 && $page != $page_nb) {
+                echo '<li><a class="pagination-link is-current" href="library.php?p='.$page.'">'.$page.'</a></li>';
+            }?>
+            <li><span class="pagination-ellipsis">&hellip;</span></li>
+            <li><a class="pagination-link <?php if ($page == $page_nb) {echo 'is-current';}?>" href="library.php?p=<?=$page_nb?>" ><?=$page_nb?></a></li>
+        </ul>
+    </nav><br>
 </div>
 </body>
 <?php require_once 'footer.php';?>
