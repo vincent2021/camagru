@@ -8,19 +8,16 @@ if (isset($_GET['p'])) {
 }
 $start_item = ($page - 1) * $nb_items;
 $bdd = getDB();
-$count_req = $bdd->query('SELECT COUNT(*) FROM `pictures`');
-$page_nb = ceil($count_req->fetch()[0] / $nb_items);
-print "Nb_page".($page_nb)."<br>";
-
 $req = $bdd->prepare('SELECT `path` FROM `pictures` LIMIT :nb_items OFFSET :start_item');
 $req->bindParam('nb_items', $nb_items, PDO::PARAM_INT);
 $req->bindParam('start_item', $start_item, PDO::PARAM_INT);
 try {
+    $count_req = $bdd->query('SELECT COUNT(`id`) FROM `pictures`');
+    $page_nb = ceil($count_req->fetch()[0] / $nb_items);
     $req->execute();
     while ($result = $req->fetch()) {
         $files[] = $result['path'];
     }
-    print_r($files);
 } catch (PDOException $e) {
     echo ("An error occured: ".$e);
 }

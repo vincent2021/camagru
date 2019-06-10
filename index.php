@@ -44,8 +44,8 @@ require_once 'header.php';
                 <div class="container">
                     <h1 class="title">Preview</h1> 
                     <canvas class="is-hidden" id="canvas"></canvas>
-                    <img class="box" alt="preview" title="preview" id="preview" width="480px" src="assets/img/upload_img.svg"/>
-                    <br><button class="button is-medium is-primary" id="save_button">Save picture</button>
+                    <img class="box" alt="preview" title="preview" id="preview" width="480px" src="assets/img/upload_img.png"/>
+                    <div class="buttons"><button class="button is-medium is-primary" id="save_button">Save picture</button></div>
                 </div>
             </div> 
         </div>
