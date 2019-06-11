@@ -24,28 +24,68 @@ Class pictureClass {
         }
     }
 
-    public function getPictureComment() {
-        $req = $this->bdd->prepare('SELECT `comment_txt` FROM `comments` WHERE `pic_id`= ?');
+    public function getLikes() {
+        $req = $this->bdd->prepare('SELECT COUNT(id) FROM `likes` WHERE `pic_id`= ?');
         try {
             $req->execute(array($this->getPictureId()));
-            while ($req->fetch()) {
-                $comments[] = $req->fetch()['comment_txt'];
-            }
-            return ($comments);
+            return ($req->fetch()[0]);
         } catch (PDOException $e) {
             return ("An error occured: ".$e);
         }
     }
 
+    public function setLikes() {
+        $pic_id = $this->getPictureId();
+        $check = $this->bdd->prepare('SELECT COUNT(id) FROM likes WHERE pic_id=:picid AND user_id=:uid');
+        try {
+            $check->execute(array(
+            'picid' => $pic_id,
+            'uid' => $_SESSION['uid'],
+            ));
+            if ($check->fetch()[0] != 0) {
+                return (False);
+            }
+        } catch (PDOException $e) {
+            return ("An error occured: ".$e);
+        }
+        $req = $this->bdd->prepare('INSERT INTO likes(user_id, pic_id, status) VALUES(:uid, :pic_id, :status)');        
+        try {
+            $req->execute(array(
+            'uid' => $_SESSION['uid'],
+            'pic_id' => $pic_id,
+            'status' => 1,
+            ));
+            return (True);
+        } catch (PDOException $e) {
+            return ("An error occured: ".$e);
+        }
+    }
+
+    public function getPictureComment() {
+        $req = $this->bdd->prepare('SELECT `comment_txt`, comments.created_at, `full_name` FROM `comments` LEFT JOIN `users` ON users.id = comments.user_id WHERE `pic_id`= ?');
+        try {
+            $req->execute(array($this->getPictureId()));
+            while ($ret = $req->fetch(PDO::FETCH_ASSOC)) {
+                $comments[] = $ret;
+            }
+            if (isset($comments)) {
+                return ($comments);
+            } else {
+                return (False);
+            }
+        } catch (PDOException $e) {
+            return (array(0 => "An error occured: ".$e));
+        }
+    }
+
     public function savePicture() {
         if (file_exists($this->tmp_dir.$this->img_name)) { 
-            $req = $this->bdd->prepare('INSERT INTO pictures(user_id, path, created_at)
-            VALUES(:uid, :path, :created_at)');
+            $req = $this->bdd->prepare('INSERT INTO pictures(user_id, path)
+            VALUES(:uid, :path)');
             try {
                 $req->execute(array(
                 'uid' => $_SESSION['uid'],
                 'path' => $this->img_link,
-                'created_at' => time(),
                 ));
             } catch (PDOException $e) {
                 return ("An error occured: ".$e);

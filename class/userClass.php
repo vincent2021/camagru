@@ -29,14 +29,13 @@ Class userClass {
     public function userSignup ($name, $email, $passwd) {
         $bdd = getDB();
         $passwd = hash('whirlpool', $passwd);
-        $req = $bdd->prepare('INSERT INTO users(full_name, email, passwd, created_at)
-        VALUES(:full_name, :email, :passwd, :created_at)');
+        $req = $bdd->prepare('INSERT INTO users(full_name, email, passwd)
+        VALUES(:full_name, :email, :passwd)');
         try {
             $req->execute(array(
             'full_name' => $name,
             'email' => $email,
             'passwd' => $passwd,
-            'created_at' => time(),
             ));
         } catch (PDOException $e) {
             if ($e->errorInfo[1] == 1062) {
