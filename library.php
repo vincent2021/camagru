@@ -1,7 +1,7 @@
 <?php 
 require_once  'header.php';
 $nb_items = 6;
-if (isset($_GET['p'])) {
+if (isset($_GET['p']) && $_GET['p'] != 0) {
     $page = $_GET['p'];
 } else {
     $page = 1;
@@ -52,7 +52,7 @@ try {
                 echo '<li><a class="pagination-link is-current" href="library.php?p='.$page.'">'.$page.'</a></li>';
             }?>
             <li><span class="pagination-ellipsis">&hellip;</span></li>
-            <li><a class="pagination-link <?php if ($page == $page_nb) {echo 'is-current';}?>" href="library.php?p=<?=$page_nb?>" ><?=$page_nb?></a></li>
+            <li><a class="pagination-link <?php if ($page == $page_nb) {echo 'is-current';}?>" href="library.php?p=<?php if ($page_nb != 0) {echo $page_nb;}?>" ><?php if ($page_nb != 0) {echo $page_nb;}?></a></li>
         </ul>
     </nav><br>
 </div>
