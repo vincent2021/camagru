@@ -97,17 +97,44 @@ Class pictureClass {
     }
 
     public function commentPicture($str) {
+        $pic_id = $this->getPictureId();
         $req = $this->bdd->prepare('INSERT INTO comments(user_id, pic_id, comment_txt)
         VALUES(:uid, :pic_id, :comment)');
         try {
             $req->execute(array(
             'uid' => $_SESSION['uid'],
-            'pic_id' => $this->getPictureId(),
+            'pic_id' => $pic_id,
             'comment' => $str,
             ));
         } catch (PDOException $e) {
             return ("An error occured: ".$e);
         }
+        $ret = $this->commentAlert($pic_id);
+        return (True);
+    }
+
+    public function commentAlert($pic_id) {
+        $req = $this->bdd->prepare('SELECT `full_name`, `email` FROM users
+        LEFT JOIN pictures ON pictures.user_id = users.id
+        WHERE pictures.id = :pic_id');
+        try {
+            $req->execute(array(
+            'pic_id' => $pic_id,
+            ));
+        } catch (PDOException $e) {
+            return ("An error occured: ".$e);
+        }
+        $ret = $req->fetch(PDO::FETCH_ASSOC);
+        $name = $ret['full_name'];
+        $email = $ret['email'];
+        $subject = 'Someone wrote a comment on your picture';
+        $header = 'From: contact@camagru.com';
+        $header .= "\nContent-Type: text/html; charset=\"UTF-8\"";
+        $msg = "Hi ".$name.",<br>Someone has just posted a new comment on your picture:<br>
+        http://localhost:8080/picture.php?img=".$this->img_name."<br>
+        --<br>
+        This is an automatic e-mail. Please don't reply to it.";
+        mail($email, $subject, $msg, $header);
         return (True);
     }
 }

@@ -63,22 +63,26 @@ Class userClass {
 
     public function confirmUser($email, $key) {
         $bdd = getDB();
-        $check = $bdd->prepare('SELECT COUNT(id) FROM users WHERE email=:email AND ckey=:ckey');
+        $check = $bdd->prepare('SELECT `id` FROM users WHERE email=:email AND ckey=:ckey');
         try {
             $check->execute(array(
             'email' => $email,
-            'ckey' => $key,
+            'ckey' => $key
             ));
-            if ($check->fetch()[0] == 1) {
-                try {
-                    $bdd->query('INSERT INTO users(`status`) VALUES(1)');
-                } catch (PDOException $e) {
-                    return ("An error occured: ".$e);
-                }
-                return (True);
-            }
+            $uid = $check->fetch()['id'];
         } catch (PDOException $e) {
             return ("An error occured: ".$e);
+        }
+        try {
+            $req = $bdd->prepare('UPDATE `users` SET `status` = 1 WHERE (id=:id)');
+            $req->execute(array('id' => $uid));
+        } catch (PDOException $e) {
+            return ("An error occured: ".$e);
+        }
+        if($req->rowCount() == 1) {
+            return (True);
+        } else {
+            return (False);
         }
     }
 
