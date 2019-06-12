@@ -11,9 +11,11 @@ $bdd->exec('CREATE TABLE `pictures`
 CREATE TABLE `users`
 (
   `id` int PRIMARY KEY NOT NULL AUTO_INCREMENT,
-  `full_name` varchar(255),
-  `email` varchar(255) UNIQUE,
-  `passwd` varchar(255),
+  `full_name` varchar(255) NOT NULL,
+  `email` varchar(255) UNIQUE  NOT NULL,
+  `passwd` varchar(255) NOT NULL,
+  `ckey` varchar(32) NOT NULL,
+  `status` int NOT NULL DEFAULT "0",
   `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
