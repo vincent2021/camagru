@@ -103,5 +103,10 @@ Class userClass {
             return ("Error occured.");
         }
     }
+
+    public function userChangePasswd ($uid) {
+        $bdd = getDB();
+        
+    }
 }
 
