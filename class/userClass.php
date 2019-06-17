@@ -3,9 +3,12 @@ require_once 'config/database.php';
 
 Class userClass {
 
+    public function __construct()  {
+        $this->bdd = getDB();
+    }
+
     public function userLogin ($email, $passwd) {
-        $bdd = getDB();
-        $req = $bdd->prepare('SELECT id, full_name FROM users
+        $req = $this->bdd->prepare('SELECT id, full_name FROM users
         WHERE (email=:email AND passwd=:passwd)');
         try {
             $req->execute(array(
@@ -26,9 +29,8 @@ Class userClass {
     }
 
     public function userSignup ($name, $email, $passwd) {
-        $bdd = getDB();
         $ckey = md5(microtime(True) * 100000);
-        $req = $bdd->prepare('INSERT INTO users(full_name, email, passwd, ckey)
+        $req = $this->bdd->prepare('INSERT INTO users(full_name, email, passwd, ckey)
         VALUES(:full_name, :email, :passwd, :ckey)');
         try {
             $req->execute(array(
@@ -62,8 +64,7 @@ Class userClass {
     }
 
     public function confirmUser($email, $key) {
-        $bdd = getDB();
-        $check = $bdd->prepare('SELECT `id` FROM users WHERE email=:email AND ckey=:ckey');
+        $check = $this->bdd->prepare('SELECT `id` FROM users WHERE email=:email AND ckey=:ckey');
         try {
             $check->execute(array(
             'email' => $email,
@@ -74,7 +75,7 @@ Class userClass {
             return ("An error occured: ".$e);
         }
         try {
-            $req = $bdd->prepare('UPDATE `users` SET `status` = 1 WHERE (id=:id)');
+            $req = $this->bdd->prepare('UPDATE `users` SET `status` = 1 WHERE (id=:id)');
             $req->execute(array('id' => $uid));
         } catch (PDOException $e) {
             return ("An error occured: ".$e);
@@ -86,9 +87,8 @@ Class userClass {
         }
     }
 
-    public function userDetail ($uid) {
-        $bdd = getDB();
-        $req = $bdd->prepare('SELECT full_name, email FROM users WHERE (id=:id)');
+    public function userDetail($uid) {
+        $req = $this->bdd->prepare('SELECT full_name, email FROM users WHERE (id=:id)');
         try {
             $req->execute(array(
             'id' => $uid,
@@ -104,9 +104,41 @@ Class userClass {
         }
     }
 
-    public function userChangePasswd ($uid) {
-        $bdd = getDB();
+    public function userChangePasswd($uid) {
         
+    }
+
+    public function userChangeName($new_name, $uid) {
+        $req = $this->bdd->prepare('UPDATE `users` SET full_name=:new_name WHERE id=:uid');
+        try {
+            $req->execute(array(
+                'new_name' => $new_name,
+                'uid' => $uid,
+            ));
+        } catch (PDOException $e) {
+            return ("An error occured: ".$e);
+        }
+        if($req->rowCount() == 1) {
+            return ("Name has been updated");
+        } else {
+            return ("An error occured or you entered your previous record");
+        }
+    }
+
+    public function userChangeEmail($new_email, $uid) {
+        $req = $this->bdd->prepare('UPDATE `users` SET `email` = :new_email WHERE id=:uid');
+        try {
+            $req->execute(array('uid' => $uid,
+                'new_email' =>$new_email,
+            ));
+        } catch (PDOException $e) {
+            return ("An error occured: ".$e);
+        }
+        if($req->rowCount() == 1) {
+            return ("Email has been updated");
+        } else {
+            return ("An error occured or you entered your previous record");
+        }
     }
 }
 
