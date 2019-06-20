@@ -14,7 +14,8 @@ CREATE TABLE `users`
   `full_name` varchar(255) NOT NULL,
   `email` varchar(255) UNIQUE  NOT NULL,
   `passwd` varchar(255) NOT NULL,
-  `ckey` varchar(32) NOT NULL,
+  `ckey` varchar(32),
+  `rkey` varchar(32),
   `status` int NOT NULL DEFAULT "0",
   `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
