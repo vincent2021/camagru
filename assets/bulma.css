@@ -10595,7 +10595,8 @@ label.panel-block:hover {
 .footer {
   background-color: #fafafa;
   padding: 3rem 1.5rem 4rem;
-  position: absolute; bottom: 0;
+  position: fixed;
+  bottom: 0;
   width: 100%;
 }
 /*# sourceMappingURL=bulma.css.map */

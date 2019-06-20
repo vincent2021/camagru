@@ -1,5 +1,5 @@
 <?php
-session_start();
+require_once  'header.php';
 require_once 'class/userClass.php';
 $userClass = new userClass();
 if (isset($_POST)) {
@@ -7,6 +7,7 @@ if (isset($_POST)) {
         $value = htmlspecialchars($value);
     }
 }
+
 if (isset($_SESSION['uid']) && isset($_POST['full_name'])) {
     $name_check = preg_match('~^[A-Za-z0-9_]{3,20}$~i', $_POST['full_name']);
     if ($name_check) {
@@ -31,4 +32,22 @@ if (isset($_SESSION['uid']) && (isset($_POST['oldpw']) || isset($_POST['newpw'])
     $ret = $userClass->userChangePasswd($_POST, $_SESSION['uid']);
     echo ($ret);
 }
-?>
+
+if (!isset($_SESSION['uid'])) {
+    if (isset($_POST['email'])) {
+        $fdbk = $userClass->userResetLink($_POST['email']);
+    } else {
+        $fdbk = "";
+    }
+    echo '<body>
+<div class="container">
+<br><h1 class="title">Reset your password</h1>
+<form class="form" method="POST" action="user_mgmt.php">
+    <div class="label">Enter your email</div><input class="input" id="email" type="email" name="email" value=""/> <br>
+    <br><span><input class="button is-primary" id="submit" type="submit" name="submit" value="Reset your password"></span>
+  </form><br>
+  <p>'.$fdbk.'</p><br>
+</div>
+</body>';
+}
+require_once 'footer.php';?>

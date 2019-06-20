@@ -9,12 +9,12 @@ if (isset($_GET['img'])) {
     $img_link = 'assets/img/upload_img.png';
 }
 if (isset($_POST['submit']) && strlen($_POST['comment']) > 0 && isset($_SESSION['uid'])) {
-    unset($_POST);
     if ($pictureClass->commentPicture(htmlspecialchars($_POST['comment'])) == True) {
         header('Location: picture.php?img='.$pictureClass->img_name);
     } else {
         $fdbk = "Your comment hasn't been send. Please make sure you're connected and try again.";
     }
+    unset($_POST);
 }
 if (isset($_POST['like'])) {
     if ($pictureClass->setLikes()) {

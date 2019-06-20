@@ -30,6 +30,7 @@ if (isset($_POST['submit']) && $_POST['submit'] == 'Login') {
     <div class="label">Password</div><input class ="input" id="passwd" type="password" name="passwd" value=""/><br>
     <br><span><input class="button is-primary" id="submit" type="submit" name="submit" value="Login"></span>
     <span><a class="button" href="signup.php">Sign-up</a></span>
+    <span><a class="button" href="user_mgmt.php">Password forgotten?</a></span>
   </form>
   <p><?=$fdbk?></p><br>
 </div>
