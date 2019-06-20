@@ -23,6 +23,16 @@ Class pictureClass {
             return ("An error occured: ".$e);
         }
     }
+    
+    public function getPictureUserID() {
+        $req = $this->bdd->prepare('SELECT `user_id` FROM `pictures` WHERE `path`= ?');
+        try {
+            $req->execute(array($this->img_link));
+            return ($req->fetch()['user_id']);
+        } catch (PDOException $e) {
+            return ("An error occured: ".$e);
+        }
+    }
 
     public function getLikes() {
         $req = $this->bdd->prepare('SELECT COUNT(id) FROM `likes` WHERE `pic_id`= ?');
@@ -114,7 +124,7 @@ Class pictureClass {
     }
 
     public function commentAlert($pic_id) {
-        $req = $this->bdd->prepare('SELECT `full_name`, `email` FROM users
+        $req = $this->bdd->prepare('SELECT `id`, `full_name`, `email` FROM users
         LEFT JOIN pictures ON pictures.user_id = users.id
         WHERE pictures.id = :pic_id');
         try {
@@ -125,17 +135,34 @@ Class pictureClass {
             return ("An error occured: ".$e);
         }
         $ret = $req->fetch(PDO::FETCH_ASSOC);
-        $name = $ret['full_name'];
-        $email = $ret['email'];
-        $subject = 'Someone wrote a comment on your picture';
-        $header = 'From: contact@camagru.com';
-        $header .= "\nContent-Type: text/html; charset=\"UTF-8\"";
-        $msg = "Hi ".$name.",<br>Someone has just posted a new comment on your picture:<br>
-        http://localhost:8080/picture.php?img=".$this->img_name."<br>
-        --<br>
-        This is an automatic e-mail. Please don't reply to it.";
-        mail($email, $subject, $msg, $header);
-        return (True);
+        if ($ret['id'] != $_SESSION['uid']) {
+            $name = $ret['full_name'];
+            $email = $ret['email'];
+            $subject = 'Someone wrote a comment on your picture';
+            $header = 'From: contact@camagru.com';
+            $header .= "\nContent-Type: text/html; charset=\"UTF-8\"";
+            $msg = "Hi ".$name.",<br>Someone has just posted a new comment on your picture:<br>
+            http://localhost:8080/picture.php?img=".$this->img_name."<br>
+            --<br>
+            This is an automatic e-mail. Please don't reply to it.";
+            mail($email, $subject, $msg, $header);
+            return (True);
+        }
+    }
+
+    public function deletePicture() {
+        if (unlink($this->img_link)) {
+            $req = $this->bdd->prepare('DELETE FROM `pictures` WHERE `path` = :img_link');
+            try {
+                $req->execute(array(
+                'img_link' => $this->img_link,
+                ));
+            } catch (PDOException $e) {
+                return ("An error occured: ".$e);
+            }
+            return ("Picture deleted");
+        }
+        return ("An error occured");
     }
 }
 ?>

@@ -16,13 +16,18 @@ if (isset($_POST['submit']) && strlen($_POST['comment']) > 0 && isset($_SESSION[
     }
     unset($_POST);
 }
-if (isset($_POST['like'])) {
+if (isset($_POST['like']) && isset($_SESSION['uid'])) {
     if ($pictureClass->setLikes()) {
         $fdbk = "Thanks for you like.";
     } else {
         $fdbk = "You've already liked this picture.";
     }
     unset($_POST['like']);
+}
+if (isset($_POST['delete']) && isset($_SESSION['uid'])) {
+    $ret = $pictureClass->deletePicture();
+    unset($_POST['delete']);
+    header('Location: library.php?msg='.$ret);
 }
 ?>
 <body>
@@ -31,32 +36,31 @@ if (isset($_POST['like'])) {
     <div class="container">
         <img src=<?=$img_link?> alt='main image' title='main image'>
     </div>
-    <div class="columns">
+    <?php if (isset($_SESSION['uid'])) {
+        echo '<div class="columns">
         <div class="column">
-        <form class="form" method="POST" action="picture.php?img=<?=$pictureClass->img_name?>">
+        <form class="form" method="POST" action="picture.php?img='.$pictureClass->img_name.'">
             <textarea class="textarea"  name="comment" placeholder="write a comment"></textarea>
             <input class="button" type="submit" name="submit" value="Send">
-        </form>
-        <?=$fdbk?><br>
-        <?php 
-            if (($comments = $pictureClass->getPictureComment()) == false) {
-                echo "Be the first to comment!<br>";
-            } else {
-                foreach ($comments as $comment) {
-                    echo '<strong>'.$comment['created_at'].' - '.$comment['full_name']." says...</strong><br>";
-                    echo $comment['comment_txt']."<br><br>";
-                }
-            };
-        ?>
-        </div>
+        </form>'.$fdbk.'<br>';
+        if (($comments = $pictureClass->getPictureComment()) == false) {
+            echo "Be the first to comment!<br>";
+        } else {
+            foreach ($comments as $comment) {
+                echo '<strong>'.$comment['created_at'].' - '.$comment['full_name']." says...</strong><br>";
+                echo $comment['comment_txt']."<br><br>";
+            }
+        };
+        echo '</div>
         <div class="column">
             <div class="buttons is-centered">
-            <form method="POST" action="picture.php?img=<?=$pictureClass->img_name?>">    
-                <input type="submit" name="like"  class="button is-danger is-medium" id="like" value='<?=$pictureClass->getLikes()?> Likes'>
-            </form>
-            </div>
-        </div>
-    </div>
+            <form method="POST" action="picture.php?img='.$pictureClass->img_name.'">    
+                <input type="submit" name="like"  class="button is-danger is-medium" id="like" value="'.$pictureClass->getLikes().' Likes">
+            </form>';
+        if ($pictureClass->getPictureUserID() == $_SESSION['uid']) {
+            echo '<form method="POST" action="picture.php?img='.$pictureClass->img_name.'">    
+                <input type="submit" name="delete"  class="button is-danger is-medium" id="delete" value="Delete your picture"></form>';}
+        echo '</div></div></div>';}?>
 </div>
 </body>
 <?php require_once 'footer.php';?>

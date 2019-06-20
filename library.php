@@ -6,6 +6,9 @@ if (isset($_GET['p']) && $_GET['p'] != 0) {
 } else {
     $page = 1;
 }
+if (isset($_GET['msg'])) {
+    echo '<script> alert("'.$_GET['msg'].'") </script>';
+}
 $start_item = ($page - 1) * $nb_items;
 $bdd = getDB();
 $req = $bdd->prepare('SELECT `path` FROM `pictures` LIMIT :nb_items OFFSET :start_item');
@@ -51,8 +54,9 @@ try {
             <?php if ($page != 1 && $page != $page_nb) {
                 echo '<li><a class="pagination-link is-current" href="library.php?p='.$page.'">'.$page.'</a></li>';
             }?>
-            <li><span class="pagination-ellipsis">&hellip;</span></li>
-            <li><a class="pagination-link <?php if ($page == $page_nb) {echo 'is-current';}?>" href="library.php?p=<?php if ($page_nb != 0) {echo $page_nb;}?>" ><?php if ($page_nb != 0) {echo $page_nb;}?></a></li>
+            <li <?php if ($page_nb == 1) {echo 'hidden';}?>><span class="pagination-ellipsis">&hellip;</span></li>
+            <li <?php if ($page_nb == 1) {echo 'hidden';}?>>
+            <a class="pagination-link <?php if ($page == $page_nb) {echo 'is-current';}?>"  href="library.php?p=<?php if ($page_nb != 0) {echo $page_nb;}?>" ><?php if ($page_nb != 0) {echo $page_nb;}?></a></li>
         </ul>
     </nav><br>
 </div>
