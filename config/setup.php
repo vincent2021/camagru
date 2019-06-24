@@ -1,6 +1,6 @@
 <?php
 require_once 'database.php';
-$bdd->exec('CREATE TABLE `pictures`
+getDB()->exec('CREATE TABLE `pictures`
 (
   `id` int PRIMARY KEY NOT NULL AUTO_INCREMENT,
   `user_id` int NOT NULL,
@@ -40,9 +40,9 @@ CREATE TABLE `likes`
 
 ALTER TABLE `pictures` ADD FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
 ALTER TABLE `comments` ADD FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
-ALTER TABLE `comments` ADD FOREIGN KEY (`pic_id`) REFERENCES `pictures` (`id`);
+ALTER TABLE `comments` ADD FOREIGN KEY (`pic_id`) REFERENCES `pictures` (`id`) ON DELETE CASCADE;
 ALTER TABLE `likes` ADD FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
-ALTER TABLE `likes` ADD FOREIGN KEY (`pic_id`) REFERENCES `pictures` (`id`);
+ALTER TABLE `likes` ADD FOREIGN KEY (`pic_id`) REFERENCES `pictures` (`id`) ON DELETE CASCADE;
 ');
 echo "BDD Created<br>";
 ?>
