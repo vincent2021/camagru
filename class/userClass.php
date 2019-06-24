@@ -92,7 +92,7 @@ Class userClass {
     }
 
     public function userDetail($uid) {
-        $req = $this->bdd->prepare('SELECT full_name, email FROM users WHERE (id=:id)');
+        $req = $this->bdd->prepare('SELECT full_name, email, alert FROM users WHERE (id=:id)');
         try {
             $req->execute(array(
             'id' => $uid,
@@ -226,6 +226,16 @@ Class userClass {
         } else {
             return ("An error occured or you entered your previous record");
         }
+    }
+
+    public function userPasswdCheck($passwd) {
+        if (strlen($passwd) < 6){
+            return (False);
+        }
+        if (!preg_match("#[0-9]+#", $passwd) || !preg_match("#[a-zA-Z]+#", $passwd)) {
+            return (False);
+        }
+        return (True);
     }
 }
 

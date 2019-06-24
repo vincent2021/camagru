@@ -14,31 +14,37 @@ if (isset($_POST)) {
     }
     if (isset($_POST['full_name'])){
         $fdbk = "New name is ".$_POST['full_name'];
-    }
-    if (isset($_POST['email'])){
+    } else if (isset($_POST['email'])){
         $fdbk = "New email is ".$_POST['email'];
-    }
-    if (isset($_POST['oldpw']) && isset($_POST['newpw']) && isset($_SESSION['uid'])) {
+    } else if (isset($_POST['oldpw']) && isset($_POST['newpw']) && isset($_SESSION['uid'])) {
         $new_pw = hash('whirlpool', $_POST['newpw']);
         $old_pw = hash('whirlpool', $_POST['oldpw']);
         $fdbk = $userClass->userChangePasswd($old_pw, $new_pw);
+    } else if (isset($_POST['alert'])) {
+        echo "Alert:".$_POST['alert'];
     }
 }
+print_r($_POST);
 ?>
 <body>
 <div class="section">
     <h1 class="title">User Details</h1>
     <?php if (isset($fdbk)) { echo '<script>alert("'.$fdbk.'")</script>';}?>
-    <div class="label">Name</div> <input class="input" value="<?=$data[0]?>" type="text" id="full_name" name="full_name" readonly/> <br>
+    <div class="label">Name</div> <input class="input" value="<?=$data[0]?>" type="text" id="full_name" name="full_name" readonly/> 
+    <p class="help">Minimum length is 3.</p>
     <div class="control"><br><input class="button is-primary" id="changename" type="submit" name="changename" onclick="changeName()" value="Change your name" ></div> <br>
-
     <div class="label">Email</div> <input class="input" value="<?=$data[1]?>" type="email" id="email" name="email" readonly/><br>
     <div class="control"><br><input class="button is-primary" id="changeemail" type="submit" name="changeemail" value="Change your email" onclick="changeEmail()"></div>
     <br>
+    <h1 class="title">Alerts</h1>
+    <form id="alertForm" class="form" method="POST" action="user.php" >
+        <label class="checkbox"><input <?php if($data['alert'] == 1) {echo 'checked value="1"';} else {echo 'value="0"';}?> id="alert" name="alert" onclick="changeAlert()" type="checkbox" value=""> Alert me when someone post a comment on my pictures</label>
+    </form><br><br>
     <h1 class="title">Change your password</h1>
     <form class="form" method="POST" action="user.php" >
         <div class="label">Old password</div> <input class="input" value="" type="password" id="oldpw" name="oldpw" value=""/> <br>
-        <div class="label">New password</div> <input class="input" value="" type="password" id="newpw" name="newpw" value=""/> <br>
+        <div class="label">New password</div> <input class="input" value="" type="password" id="newpw" name="newpw" value=""/>
+        <p class="help">Password must contains at least one letter and one number. Minimum length is 6.</p><br>
         <div class="label">Confirm your new password</div> <input class="input" value="" type="password" id="newpw" name="newpw2" value=""/> <br>
         <br><div class="control"><input class="button is-danger" id="changepasswd" type="submit" name="changepasswd" value="Change your password"></div>
     </form>
@@ -60,7 +66,7 @@ function changeName() {
 }
 
 function changeEmail() {
-    if (document.getElementById("email").readOnly == false) {    
+    if (document.getElementById("email").readOnly = false) {    
         var form = new FormData();
         form.append('email', document.getElementById("email").value);
         postData(form);
@@ -71,6 +77,17 @@ function changeEmail() {
         document.getElementById("email").readOnly = false;
         document.getElementById("changeemail").value = "Confirm";
         document.getElementById("changeemail").className = "button is-danger";
+    }
+}
+
+function changeAlert() {
+    if (document.getElementById("alert").checked) {    
+        document.getElementById("alert").value = 0;
+        document.getElementById("alertForm") = submit;
+        alert("Notifications are enabled");
+    } else {
+        document.getElementById("alert").value = 1;
+        alert("Notifications are disabled");
     }
 }
 
