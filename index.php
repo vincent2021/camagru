@@ -50,7 +50,7 @@ require_once 'header.php';
             </div> 
         </div>
     </div>
-    <?php if (isset($_SESSION['uid'])) { echo '<script type="text/javascript" src="capture.js"></script>';} else {header('Location: login.php');} ?>
+    <?php if (isset($_SESSION['uid'])) { echo '<script type="text/javascript" src="capture.js"></script>';} else {header('Location: library.php');} ?>
 </body>
 <?php require_once 'footer.php';?>
 
