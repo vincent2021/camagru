@@ -376,6 +376,10 @@ body {
   flex-direction: column;
 }
 
+#wrapper {
+  flex: 1;
+}
+
 a {
   color: #3273dc;
   cursor: pointer;
@@ -10597,7 +10601,7 @@ label.panel-block:hover {
 
 .footer {
   background-color: #fafafa;
-  padding: 3rem 1.5rem 4rem;
+  padding: 2rem 1.5rem 3rem;
   width: 100%;
 }
 

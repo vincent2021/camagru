@@ -48,13 +48,13 @@ ALTER TABLE `likes` ADD FOREIGN KEY (`pic_id`) REFERENCES `pictures` (`id`) ON D
 ');
 try {
   $req->execute();
-  echo 'BDD Created. Go to <a href='.$_SERVER['HTTP_HOST'].'>homepage.</a>';
+  echo 'BDD Created. Go to <a href="http://'.$_SERVER['HTTP_HOST'].'">homepage</a>.';
 } catch (PDOException $e) {
-  if ($e->errorInfo[1] == 1050) {
-    echo ("Tables already exist. Please follow this <a href=reset.php>link</a> to delete the DB.");
-} else {
-    echo ("An error occured:". $e);
-}
+    if ($e->errorInfo[1] == 1050) {
+      echo ("Tables already exist. Please follow this <a href='reset.php'>link</a> to delete the DB.");
+  } else {
+      echo ("An error occured:". $e);
+  }
 }
 
 ?>

@@ -22,7 +22,11 @@ try {
         $files[] = $result['path'];
     }
 } catch (PDOException $e) {
-    echo ("An error occured: ".$e);
+    if ($e->errorInfo[1] == 1146) {
+        header('Location: config/setup.php');
+    } else {
+        echo ("An error occured:". $e);
+    }
 }
 ?>
 <body>
