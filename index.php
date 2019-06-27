@@ -1,6 +1,17 @@
-<?php
-require_once 'header.php';
-?>
+<?php require_once 'header.php';
+if (isset($_SESSION['uid'])) {
+    $bdd=getDB();
+    $req = $bdd->prepare('SELECT `path` FROM `pictures`  WHERE `user_id`=:uid ORDER BY `id` DESC LIMIT 4');
+    $req->bindParam('uid', $_SESSION['uid']);
+    try {
+        $req->execute();
+        while ($result = $req->fetch()) {
+            $files[] = $result['path'];
+        }
+    } catch (PDOException $e) {
+        echo ("An error occured: ".$e);
+    }
+}?>
 <body>
     <div class="columns is-centered">
         <div class="column is-half">
@@ -17,24 +28,24 @@ require_once 'header.php';
                 <h2 class="title">Filters</h2>
                 <div class="control" id="filters">
                     <label class="radio">
-                        <input type="radio" name="filter" value="90s.png" id="filter" checked>
-                        <img src="assets/filters/90s.png" alt="90s filter" title="90s filter" width="100px"><br>
-                        Back to the 90s<br>
+                        <input type="radio" name="filter" value="dalma.png" id="filter">
+                        <img src="assets/filters/dalma.png" alt="dalma filter" title="dalma filter" width="200px"><br>
+                        Dalmatien<br>
                     </label>
                     <label class="radio">
-                        <input type="radio" name="filter" value="ananas.png" id="filter">
-                        <img src="assets/filters/ananas.png" alt="ananas filter" title="ananas filter" width="200px"><br>
-                        Ananas<br>
+                        <input type="radio" name="filter" value="rainbow.png" id="filter">
+                        <img src="assets/filters/rainbow.png" alt="rainbow filter" title="rainbow filter" width="200px"><br>
+                        Rainbow<br>
                     </label>
                     <label class="radio">
-                        <input type="radio" name="filter" value="walkman.png" id="filter">
-                        <img src="assets/filters/walkman.png" alt="walkman filter" title="walkman filter" width="200px"><br>
-                        Walman<br>
+                        <input type="radio" name="filter" value="dog.png" id="filter">
+                        <img src="assets/filters/dog.png" alt="dog filter" title="dog filter" width="200px"><br>
+                        Dog<br>
                     </label>
                     <label class="radio">
-                        <input type="radio" name="filter" value="windows.png" id="filter">
-                        <img src="assets/filters/windows.png" alt="windows filter" title="windows filter" width="200px"><br>
-                        Windows<br>
+                        <input type="radio" name="filter" value="cat.png" id="filter" checked>
+                        <img src="assets/filters/cat.png" alt="cat filter" title="cat filter" width="100px"><br>
+                        Cat<br>
                     </label>
                 </div>
                 </div>
@@ -46,6 +57,26 @@ require_once 'header.php';
                     <canvas class="is-hidden" id="canvas"></canvas>
                     <img class="box" alt="preview" title="preview" id="preview" width="480px" src="assets/img/upload_img.png"/>
                     <div class="buttons"><button class="button is-medium is-primary" id="save_button">Save picture</button></div>
+                </div><br>
+                <div class="container">
+                    <h1 class="title">Your last 4 pictures</h1>
+                    <?php  
+                    echo '<div class="columns">';
+                    $items_per_line = 2;
+                    foreach ($files as $file) {
+                        $file_name = substr($file, strrpos($file, '/') + 1);
+                        $pic_html = '<div class="column"><a href="picture.php?img='.$file_name.'"><img src="'.$file.'" title="'.$file.'" alt="lib_picture"></a></div>';
+                        if ($items_per_line != 0) {
+                        echo $pic_html;
+                        $items_per_line--;
+                        } else {
+                            echo '</div><br><div class="columns">';
+                            $items_per_line = 2;
+                            echo $pic_html;
+                        }
+                    }
+                    echo '</div>';
+                ?>
                 </div>
             </div> 
         </div>

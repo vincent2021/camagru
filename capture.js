@@ -19,9 +19,6 @@
           video.onloadedmetadata = function() {
             video.play();
           };
-      }).catch(
-      function(err) {
-        console.log("An error occured! " + err);
       });
     
     video.addEventListener('canplay', function(ev){
@@ -47,15 +44,20 @@
       file_input = document.querySelector('#upload_file');
       file_input.click();
       file_input.addEventListener('change', function() {
+        if (file_input.files[0].type == 'image/png') {
           reader = new FileReader();
           reader.readAsDataURL(file_input.files[0]);
           reader.addEventListener('load', function() {
-              sendPicture(reader.result, getFilter());
+            sendPicture(reader.result, getFilter());
           });
+        } else {
+          document.getElementById("upload_button").innerText = "Please upload PNG only";
+        }
       });
     }
 
     function sendPicture(data, filter) {
+      if (document.getElementById("preview").src)
       var xhr = getXMLHttpRequest();
       xhr.onreadystatechange = function() {
         if(xhr.readyState == 4 && xhr.status == 200) {
@@ -90,7 +92,7 @@
       var params = 'img_src=' + img_src;
       xhr.onreadystatechange = function() {
         if(xhr.readyState == 4 && xhr.status == 200) {
-            console.log(xhr.response);
+          console.log(xhr.response);
         }
       }
       xhr.open('POST', 'librairy_mgmt.php', true);;
