@@ -21,7 +21,7 @@
           };
       });
     
-    video.addEventListener('canplay', function(ev){
+    video.addEventListener('canplay', function(){
       if (!streaming) {
         height = video.videoHeight / (video.videoWidth/width);
         video.setAttribute('width', width);
@@ -90,19 +90,14 @@
       var xhr = getXMLHttpRequest();
       var img_src = document.getElementById("preview").src;
       var params = 'img_src=' + img_src;
-      xhr.onreadystatechange = function() {
-        if(xhr.readyState == 4 && xhr.status == 200) {
-          console.log(xhr.response);
-        }
-      }
-      xhr.open('POST', 'librairy_mgmt.php', true);;
+      xhr.open('POST', 'library_mgmt.php', true);;
       xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
       xhr.send(params);
+      document.location.reload(true);
     });
 
     function getXMLHttpRequest() {
       var xhr = null;
-      
       if (window.XMLHttpRequest || window.ActiveXObject) {
           if (window.ActiveXObject) {
               try {
@@ -117,7 +112,6 @@
           alert("Your browser doesn't support XMLHTTPRequest...");
           return null;
       }
-      
       return xhr;
   }
     

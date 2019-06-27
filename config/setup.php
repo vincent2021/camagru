@@ -1,7 +1,7 @@
 <?php
 require_once 'database.php';
 $bdd = getDB();
-$bdd->exec('CREATE TABLE `pictures`
+$req = $bdd->prepare('CREATE TABLE `pictures`
 (
   `id` int PRIMARY KEY NOT NULL AUTO_INCREMENT,
   `user_id` int NOT NULL,
@@ -46,5 +46,15 @@ ALTER TABLE `comments` ADD FOREIGN KEY (`pic_id`) REFERENCES `pictures` (`id`) O
 ALTER TABLE `likes` ADD FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
 ALTER TABLE `likes` ADD FOREIGN KEY (`pic_id`) REFERENCES `pictures` (`id`) ON DELETE CASCADE;
 ');
-echo "BDD Created<br>";
+try {
+  $req->execute();
+  echo 'BDD Created. Go to <a href='.$_SERVER['HTTP_HOST'].'>homepage.</a>';
+} catch (PDOException $e) {
+  if ($e->errorInfo[1] == 1050) {
+    echo ("Tables already exist. Please follow this <a href=reset.php>link</a> to delete the DB.");
+} else {
+    echo ("An error occured:". $e);
+}
+}
+
 ?>

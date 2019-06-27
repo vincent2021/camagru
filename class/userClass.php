@@ -104,7 +104,7 @@ Class userClass {
             $data=$req->fetch();
             return ($data);
         } else {
-            return ("Error occured.");
+            return (False);
         }
     }
 
@@ -218,7 +218,11 @@ Class userClass {
                 'new_email' =>$new_email,
             ));
         } catch (PDOException $e) {
-            return ("An error occured: ".$e);
+            if ($e->errorInfo[1] == 1062) {
+                return ("This email already exists in the database.");
+            } else {
+                return ("An error occured:". $e);
+            }
         }
         if($req->rowCount() == 1) {
             return ("Email has been updated");

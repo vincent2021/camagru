@@ -21,7 +21,7 @@ if (isset($_SESSION['uid']) && isset($_POST['email'])) {
     if ($email_check) {
         $ret = $userClass->userChangeEmail($_POST['email'], $_SESSION['uid']);
     } else {
-        $ret = "Please check your e-mail";
+        $ret = "Please check that your email has a correct format";
     }
     echo ($ret);
 }

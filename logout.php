@@ -1,5 +1,7 @@
 <?php require_once 'header.php';
-unset($_SESSION['uid']);
+if (isset( $_COOKIE[session_name()]))
+setcookie( session_name(), “”, time()-3600, “/” );
+$_SESSION = array();
 session_destroy();
 echo "Logout sucessfull, redirecting to homepage.<br>";
 header('Location: index.php');

@@ -24,7 +24,7 @@ if (isset($_POST)) {
 }
 ?>
 <body>
-<div class="section">
+<div class="section" style="max-width:400px">
     <h1 class="title">User Details</h1>
     <?php if (isset($fdbk)) { echo '<script>alert("'.$fdbk.'")</script>';}?>
     <div class="label">Name</div> <input class="input" value="<?=$data[0]?>" type="text" id="full_name" name="full_name" readonly/> 
@@ -32,8 +32,7 @@ if (isset($_POST)) {
     <div class="control"><br><input class="button is-primary" id="changename" type="submit" name="changename" onclick="changeName()" value="Change your name" ></div> <br>
     <div class="label">Email</div> <input class="input" value="<?=$data[1]?>" type="email" id="email" name="email" readonly/><br>
     <div class="control"><br><input class="button is-primary" id="changeemail" type="submit" name="changeemail" value="Change your email" onclick="changeEmail()"></div>
-    <br>
-    <h1 class="title">Alerts</h1>
+    <br><h1 class="title">Alerts</h1>
     <form id="alertForm" class="form" method="POST" action="user.php" >
         <label class="checkbox"><input <?php if($data['alert'] == 1) {echo 'checked value="1"';} else {echo 'value="0"';}?> id="alert" name="alert" onclick="changeAlert()" type="checkbox" value=""> Alert me when someone post a comment on my pictures</label>
     </form><br><br>
@@ -46,6 +45,7 @@ if (isset($_POST)) {
         <br><div class="control"><input class="button is-danger" id="changepasswd" type="submit" name="changepasswd" value="Change your password"></div>
     </form><br>
 </div>
+</body>
 <script type="text/javascript">
 function changeName() {
     if (document.getElementById("full_name").readOnly == false) {
@@ -63,17 +63,18 @@ function changeName() {
 }
 
 function changeEmail() {
-    if (document.getElementById("email").readOnly = false) {    
+    if (document.getElementById('email').readOnly == false) {    
         var form = new FormData();
-        form.append('email', document.getElementById("email").value);
+        form.append('email', document.getElementById('email').value);
         postData(form);
-        document.getElementById("full_name").readOnly = true;
-        document.getElementById("changename").value = "Done";
-        document.getElementById("changename").className = "button is-primary";
+        document.getElementById('email').readOnly = true;
+        document.getElementById('changeemail').value = "Done";
+        document.getElementById('changeemail').className = "button is-primary";
     } else {
-        document.getElementById("email").readOnly = false;
-        document.getElementById("changeemail").value = "Confirm";
-        document.getElementById("changeemail").className = "button is-danger";
+        document.getElementById('email').readOnly = false;
+        console.log( document.getElementById('email').value);
+        document.getElementById('changeemail').value = "Confirm";
+        document.getElementById('changeemail').className = "button is-danger";
     }
 }
 
@@ -99,5 +100,4 @@ function postData(form) {
     xhr.send(form);
 }
 </script>
-</body>
 <?php require_once 'footer.php';?>

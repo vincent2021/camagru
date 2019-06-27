@@ -32,7 +32,7 @@ if (isset($_POST['submit']) && $_POST['submit'] == 'Login') {
     <span><a class="button" href="signup.php">Sign-up</a></span>
     <span><a class="button" href="user_mgmt.php">Password forgotten?</a></span>
   </form>
-  <p><?=$fdbk?></p><br>
+  <p><br><?=$fdbk?></p><br>
 </div>
 </body>
 <?php require_once 'footer.php';?>

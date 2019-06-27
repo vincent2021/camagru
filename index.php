@@ -19,7 +19,7 @@ if (isset($_SESSION['uid'])) {
         <div class="column is-half">
             <div class="section">
                 <h1 class="title">Webcam Feed</h1>
-                <video class="box" id="webcam"></video>
+                <video class="box" id="webcam"><img src="assets/filters/fox.png" alt="fox filter" title="fox filter" width="200px" style="z-index=10"></video>
                 <div class="buttons is-centered">
                     <button class="button is-danger is-medium" id="shoot_button">Take a picture</button>
                     <input id="upload_file" type="file" hidden="hidden" />
@@ -35,19 +35,29 @@ if (isset($_SESSION['uid'])) {
                         Dalmatien<br>
                     </label>
                     <label class="radio">
-                        <input type="radio" name="filter" value="rainbow.png" id="filter">
-                        <img src="assets/filters/rainbow.png" alt="rainbow filter" title="rainbow filter" width="200px"><br>
-                        Rainbow<br>
+                        <input type="radio" name="filter" value="fox.png" id="filter">
+                        <img src="assets/filters/fox.png" alt="fox filter" title="fox filter" width="200px"><br>
+                        Fox<br>
                     </label>
                     <label class="radio">
                         <input type="radio" name="filter" value="dog.png" id="filter">
                         <img src="assets/filters/dog.png" alt="dog filter" title="dog filter" width="200px"><br>
                         Dog<br>
-                    </label>
+                    </label><br>
                     <label class="radio">
                         <input type="radio" name="filter" value="cat.png" id="filter" checked>
-                        <img src="assets/filters/cat.png" alt="cat filter" title="cat filter" width="100px"><br>
+                        <img src="assets/filters/cat.png" alt="cat filter" title="cat filter" width="200px"><br>
                         Cat<br>
+                    </label>
+                    <label class="radio">
+                        <input type="radio" name="filter" value="cerf.png" id="filter" checked>
+                        <img src="assets/filters/cerf.png" alt="cerf filter" title="cerf filter" width="200px"><br>
+                        Cerf<br>
+                    </label>
+                    <label class="radio">
+                        <input type="radio" name="filter" value="chihuahua.png" id="filter" checked>
+                        <img src="assets/filters/chihuahua.png" alt="chihuahua filter" title="chihuahua filter" width="200px"><br>
+                        Chihuahua<br>
                     </label>
                 </div>
                 </div>
@@ -62,21 +72,25 @@ if (isset($_SESSION['uid'])) {
                 </div><br>
                 <div class="container">
                     <h1 class="title">Your last 4 pictures</h1>
-                    <?php echo '<div class="columns">';
+                    <?php echo '<div id="last_pics"> <div class="columns">';
                     $items_per_line = 2;
-                    foreach ($files as $file) {
-                        $file_name = substr($file, strrpos($file, '/') + 1);
-                        $pic_html = '<div class="column"><a href="picture.php?img='.$file_name.'"><img src="'.$file.'" title="'.$file.'" alt="lib_picture"></a></div>';
-                        if ($items_per_line != 0) {
-                        echo $pic_html;
-                        $items_per_line--;
-                        } else {
-                            echo '</div><br><div class="columns">';
-                            $items_per_line = 2;
+                    if (isset($files)) {
+                        foreach ($files as $file) {
+                            $file_name = substr($file, strrpos($file, '/') + 1);
+                            $pic_html = '<div class="column"><a href="picture.php?img='.$file_name.'"><img src="'.$file.'" title="'.$file.'" alt="lib_picture"></a></div>';
+                            if ($items_per_line != 0) {
                             echo $pic_html;
+                            $items_per_line--;
+                            } else {
+                                echo '</div><br><div class="columns">';
+                                $items_per_line = 2;
+                                echo $pic_html;
+                            }
                         }
+                    } else {
+                        echo "<p>Take your first picture!</p>";
                     }
-                    echo '</div>';
+                    echo '</div></div>';
                 ?>
                 </div>
             </div> 
