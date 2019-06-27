@@ -124,7 +124,7 @@ Class pictureClass {
     }
 
     public function commentAlert($pic_id) {
-        $req = $this->bdd->prepare('SELECT `id`, `full_name`, `email` FROM users
+        $req = $this->bdd->prepare('SELECT `id`, `full_name`, `email`, `alert` FROM users
         LEFT JOIN pictures ON pictures.user_id = users.id
         WHERE pictures.id = :pic_id');
         try {
@@ -135,7 +135,7 @@ Class pictureClass {
             return ("An error occured: ".$e);
         }
         $ret = $req->fetch(PDO::FETCH_ASSOC);
-        if ($ret['id'] != $_SESSION['uid']) {
+        if ($ret['id'] != $_SESSION['uid'] && $ret['alert'] == 1) {
             $name = $ret['full_name'];
             $email = $ret['email'];
             $subject = 'Someone wrote a comment on your picture';

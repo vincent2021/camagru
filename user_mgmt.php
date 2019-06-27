@@ -1,5 +1,4 @@
-<?php
-require_once  'header.php';
+<?php session_start();
 require_once 'class/userClass.php';
 $userClass = new userClass();
 if (isset($_POST)) {
@@ -7,7 +6,6 @@ if (isset($_POST)) {
         $value = htmlspecialchars($value);
     }
 }
-
 if (isset($_SESSION['uid']) && isset($_POST['full_name'])) {
     $name_check = preg_match('~^[A-Za-z0-9_]{3,20}$~i', $_POST['full_name']);
     if ($name_check) {
@@ -28,12 +26,18 @@ if (isset($_SESSION['uid']) && isset($_POST['email'])) {
     echo ($ret);
 }
 
-if (isset($_SESSION['uid']) && (isset($_POST['oldpw']) || isset($_POST['newpw']))) {
+if (isset($_SESSION['uid']) && (isset($_POST['oldpw']) && isset($_POST['newpw']) && isset($_POST['newpw2']))) {
     $ret = $userClass->userChangePasswd($_POST, $_SESSION['uid']);
     echo ($ret);
 }
 
+if (isset($_SESSION['uid']) && isset($_POST['alert'])) {
+    $ret = $userClass->userAlertChange($_POST['alert'], $_SESSION['uid']);
+    echo ($ret);
+}
+
 if (!isset($_SESSION['uid'])) {
+    require_once 'header.php';
     if (isset($_POST['email'])) {
         $fdbk = $userClass->userResetLink($_POST['email']);
     } else {
@@ -49,5 +53,4 @@ if (!isset($_SESSION['uid'])) {
   <p>'.$fdbk.'</p><br>
 </div>
 </body>';
-}
-require_once 'footer.php';?>
+require_once 'footer.php';}?>

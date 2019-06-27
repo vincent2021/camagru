@@ -10,5 +10,4 @@ if (isset($_GET['key']) && isset($_GET['email'])) {
         echo "Account already activated or wrong link.<br>";
     }
 }
-require_once "footer.php";
-?>
+require_once "footer.php";?>

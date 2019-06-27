@@ -11,6 +11,8 @@ if (isset($_SESSION['uid'])) {
     } catch (PDOException $e) {
         echo ("An error occured: ".$e);
     }
+} else {
+    header('Location: library.php');
 }?>
 <body>
     <div class="columns is-centered">
@@ -60,8 +62,7 @@ if (isset($_SESSION['uid'])) {
                 </div><br>
                 <div class="container">
                     <h1 class="title">Your last 4 pictures</h1>
-                    <?php  
-                    echo '<div class="columns">';
+                    <?php echo '<div class="columns">';
                     $items_per_line = 2;
                     foreach ($files as $file) {
                         $file_name = substr($file, strrpos($file, '/') + 1);
@@ -81,7 +82,6 @@ if (isset($_SESSION['uid'])) {
             </div> 
         </div>
     </div>
-    <?php if (isset($_SESSION['uid'])) { echo '<script type="text/javascript" src="capture.js"></script>';} else {header('Location: library.php');} ?>
+    <?php if (isset($_SESSION['uid'])) { echo '<script type="text/javascript" src="capture.js"></script>';} ?>
 </body>
 <?php require_once 'footer.php';?>
-

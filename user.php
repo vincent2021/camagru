@@ -20,11 +20,8 @@ if (isset($_POST)) {
         $new_pw = hash('whirlpool', $_POST['newpw']);
         $old_pw = hash('whirlpool', $_POST['oldpw']);
         $fdbk = $userClass->userChangePasswd($old_pw, $new_pw);
-    } else if (isset($_POST['alert'])) {
-        echo "Alert:".$_POST['alert'];
     }
 }
-print_r($_POST);
 ?>
 <body>
 <div class="section">
@@ -42,12 +39,12 @@ print_r($_POST);
     </form><br><br>
     <h1 class="title">Change your password</h1>
     <form class="form" method="POST" action="user.php" >
-        <div class="label">Old password</div> <input class="input" value="" type="password" id="oldpw" name="oldpw" value=""/> <br>
-        <div class="label">New password</div> <input class="input" value="" type="password" id="newpw" name="newpw" value=""/>
+        <div class="label">Old password</div> <input class="input" value="" type="password" id="oldpw" autocomplete="current-password" name="oldpw" value=""/> <br>
+        <div class="label">New password</div> <input class="input" value="" type="password" id="newpw" autocomplete="new-password" name="newpw" value=""/>
         <p class="help">Password must contains at least one letter and one number. Minimum length is 6.</p><br>
-        <div class="label">Confirm your new password</div> <input class="input" value="" type="password" id="newpw" name="newpw2" value=""/> <br>
+        <div class="label">Confirm your new password</div> <input class="input" value="" type="password" id="newpw2" autocomplete="new-password" name="newpw2" value=""/> <br>
         <br><div class="control"><input class="button is-danger" id="changepasswd" type="submit" name="changepasswd" value="Change your password"></div>
-    </form>
+    </form><br>
 </div>
 <script type="text/javascript">
 function changeName() {
@@ -81,25 +78,25 @@ function changeEmail() {
 }
 
 function changeAlert() {
+    var form = new FormData();
     if (document.getElementById("alert").checked) {    
-        document.getElementById("alert").value = 0;
-        document.getElementById("alertForm") = submit;
-        alert("Notifications are enabled");
+        form.append('alert', 1);
     } else {
-        document.getElementById("alert").value = 1;
-        alert("Notifications are disabled");
+        form.append('alert', 0);
     }
+    postData(form);
 }
 
 function postData(form) {
-    var req = new XMLHttpRequest;
-    req.onreadystatechange = function() {
-        if(req.readyState == 4 && req.status == 200) {
-            alert("Change successfully taken into account");
+    var xhr = new XMLHttpRequest;
+    xhr.onreadystatechange = function() {
+        if(xhr.readyState == 4 && xhr.status == 200) {
+            $ret = xhr.response;
+            alert($ret);
         }
     }
-    req.open("POST", 'user_mgmt.php');
-    req.send(form);
+    xhr.open("POST", 'user_mgmt.php');
+    xhr.send(form);
 }
 </script>
 </body>

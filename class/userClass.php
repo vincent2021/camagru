@@ -156,21 +156,20 @@ Class userClass {
 
     }
 
-    public function userResetPasswd($old_pw, $new_pw, $key, $email) {
-        $check = $this->bdd->prepare('SELECT `passwd` FROM `users` WHERE email=:email AND rkey=:rkey');
+    public function userResetPasswd($passwd, $key, $email) {
+        $check = $this->bdd->prepare('SELECT `email` FROM `users` WHERE rkey=:rkey');
         try {
             $check->execute(array(
-            'email' => $email,
             'rkey' => $key
             ));
         } catch (PDOException $e) {
             return ("An error occured: ".$e);
         }
-        if ($check->fetch()['passwd'] == $old_pw && $check->rowCount() == 1) {
+        if ($check->fetch()['email'] == $email && $check->rowCount() == 1) {
             try {
                 $req = $this->bdd->prepare('UPDATE `users` SET `passwd` =:new_pw, `rkey`=:rkey, `status`=:status WHERE email=:email');
                 $req->execute(
-                    array('new_pw' => $new_pw,
+                    array('new_pw' => $passwd,
                     'email' => $email,
                     'rkey' => NULL,
                     'status' => 1,
@@ -236,6 +235,23 @@ Class userClass {
             return (False);
         }
         return (True);
+    }
+
+    public function userAlertChange($alert_status, $uid) {
+        $req = $this->bdd->prepare('UPDATE `users` SET `alert`=:alert_status  WHERE id=:uid');
+        try {
+            $req->execute(array(
+            'alert_status' => $alert_status,
+            'uid' => $uid,
+            ));
+        } catch (PDOException $e) {
+            return ("An error occured: ".$e);
+        }
+        if($req->rowCount() == 1) {
+            return ("Alert preference successfully changed.");
+        } else {
+            return ("An error occured.");
+        }
     }
 }
 

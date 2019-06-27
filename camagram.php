@@ -1,5 +1,4 @@
-<?php
-session_start();
+<?php session_start();
 if (isset($_SESSION['uid']) && isset($_GET['filter'])) {
     $filter_dir = 'assets/filters/';
     $im = imagecreatefrompng($GLOBALS['HTTP_RAW_POST_DATA']);
@@ -11,5 +10,4 @@ if (isset($_SESSION['uid']) && isset($_GET['filter'])) {
     imagepng($im, $preview);
     imagedestroy($im);
     print($preview);
-}
-?>
+}?>
