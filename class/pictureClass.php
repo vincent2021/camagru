@@ -124,7 +124,7 @@ Class pictureClass {
     }
 
     public function commentAlert($pic_id) {
-        $req = $this->bdd->prepare('SELECT `id`, `full_name`, `email`, `alert` FROM users
+        $req = $this->bdd->prepare('SELECT users.id, `full_name`, `email`, `alert` FROM users
         LEFT JOIN pictures ON pictures.user_id = users.id
         WHERE pictures.id = :pic_id');
         try {
